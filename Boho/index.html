@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boho'La Beauty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --clay:        #C9805A;
+      --terracotta:  #B5603A;
+      --dusty-rose:  #D4A092;
+      --blush:       #EDD5C8;
+      --sage:        #8A9E84;
+      --sage-light:  #B8C9B3;
+      --cream:       #F5EDE4;
+      --warm-white:  #FDF8F4;
+      --espresso:    #3B2A22;
+      --gold:        #C8A96A;
+      --gold-light:  #E2CC9A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--warm-white);
+      color: var(--espresso);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--clay);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, background 0.2s;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--clay);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s ease, opacity 0.2s;
+      transform: translate(-50%, -50%);
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(253, 248, 244, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200, 169, 106, 0.2);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      color: var(--espresso);
+    }
+    .nav-logo span { color: var(--clay); font-style: italic; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--espresso);
+      opacity: 0.75;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--clay); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 5rem 3rem 5rem 4rem;
+      position: relative; z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.6rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 2.5rem; height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      line-height: 1.08;
+      color: var(--espresso);
+      margin-bottom: 1.8rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--clay);
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--espresso);
+      opacity: 0.75;
+      max-width: 360px;
+      margin-bottom: 3rem;
+    }
+
+    .btn-book {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9rem;
+      background: var(--clay);
+      color: var(--warm-white);
+      text-decoration: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 1.1rem 2.4rem;
+      border-radius: 0;
+      transition: background 0.25s, transform 0.2s;
+      align-self: flex-start;
+    }
+    .btn-book:hover {
+      background: var(--terracotta);
+      transform: translateY(-2px);
+    }
+    .btn-book svg { transition: transform 0.2s; }
+    .btn-book:hover svg { transform: translateX(4px); }
+
+    .hero-right {
+      position: relative;
+      background: var(--blush);
+      overflow: hidden;
+    }
+
+    /* Decorative bohemian pattern overlay */
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(201,128,90,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 30% 80%, rgba(138,158,132,0.2) 0%, transparent 50%);
+      z-index: 1;
+    }
+
+    .hero-pattern {
+      position: absolute; inset: 0;
+      z-index: 0;
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%233B2A22' stroke-width='0.8'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3Ccircle cx='40' cy='40' r='20'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Cpath d='M10 40 L70 40 M40 10 L40 70 M18 18 L62 62 M62 18 L18 62'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 80px 80px;
+    }
+
+    .hero-image-placeholder {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Large decorative floral/boho SVG */
+    .boho-art {
+      width: 420px; height: 420px;
+      opacity: 0.55;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: 3rem; left: -1.5rem;
+      z-index: 3;
+      background: var(--espresso);
+      color: var(--gold-light);
+      padding: 1.2rem 1.8rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      max-width: 200px;
+      box-shadow: 8px 8px 0 var(--clay);
+      animation: fadeUp 1s 0.8s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-location {
+      position: absolute;
+      top: 2.5rem; right: 2.5rem;
+      z-index: 3;
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--espresso);
+      opacity: 0.6;
+      text-transform: uppercase;
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 4rem; }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 2rem; height: 1px;
+      background: var(--gold);
+      display: block;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--clay); }
+
+    /* ── SERVICES ── */
+    #services {
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    #services::after {
+      content: 'NAILS';
+      position: absolute;
+      right: -2rem; bottom: -2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 12rem;
+      color: rgba(201,128,90,0.06);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      margin-top: 3rem;
+      background: rgba(59,42,34,0.12);
+    }
+
+    .service-card {
+      background: var(--warm-white);
+      padding: 2.8rem 2.4rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .service-card:hover { background: var(--blush); }
+
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--clay);
+      transition: height 0.35s ease;
+    }
+    .service-card:hover::before { height: 100%; }
+
+    .service-icon {
+      font-size: 2rem; margin-bottom: 1.4rem;
+    }
+    .service-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.7rem;
+    }
+    .service-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--espresso);
+      opacity: 0.7;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+    .about-frame {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--blush);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-frame::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 40% 60%, rgba(201,128,90,0.25) 0%, transparent 60%);
+    }
+    .about-frame-inner {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--espresso);
+      opacity: 0.4;
+      text-align: center;
+      padding: 2rem;
+      line-height: 1.8;
+    }
+    .about-accent {
+      position: absolute;
+      bottom: -1.5rem; right: -1.5rem;
+      width: 60%; aspect-ratio: 1;
+      border: 2px solid var(--gold);
+      z-index: -1;
+    }
+    .about-tag {
+      position: absolute;
+      top: -1.2rem; left: -1.2rem;
+      background: var(--sage);
+      color: var(--warm-white);
+      padding: 0.8rem 1.4rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .about-text .section-title { margin-top: 1rem; }
+    .about-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      line-height: 1.85;
+      opacity: 0.8;
+      margin-bottom: 2.5rem;
+    }
+    .about-stats {
+      display: flex; gap: 3rem;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--clay);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* ── BOOKING CTA ── */
+    #booking {
+      background: var(--espresso);
+      color: var(--warm-white);
+      text-align: center;
+      padding: 7rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #booking::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201,128,90,0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(138,158,132,0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    #booking .section-label { color: var(--gold-light); justify-content: center; }
+    #booking .section-label::before { background: var(--gold-light); }
+    #booking .section-title { color: var(--warm-white); }
+    #booking .section-title em { color: var(--dusty-rose); }
+
+    .booking-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      opacity: 0.65;
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: #25D366;
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 1.3rem 3rem;
+      border-radius: 0;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 0 0 rgba(37,211,102,0.4);
+    }
+    .btn-whatsapp:hover {
+      background: #1ebe5c;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(37,211,102,0.35);
+    }
+
+    .booking-note {
+      margin-top: 1.8rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      opacity: 0.4;
+      text-transform: uppercase;
+    }
+
+    /* ── LOCATION ── */
+    #location {
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .location-details { }
+    .location-item {
+      display: flex; gap: 1.2rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(59,42,34,0.1);
+    }
+    .location-item:last-child { border-bottom: none; margin-bottom: 0; }
+    .location-icon {
+      width: 2.5rem; height: 2.5rem;
+      background: var(--blush);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .location-item-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 0.3rem;
+    }
+    .location-item-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      line-height: 1.55;
+    }
+
+    .map-placeholder {
+      background: var(--blush);
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-placeholder iframe {
+      width: 100%; height: 100%;
+      border: none;
+      filter: sepia(0.3) saturate(0.8);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--espresso);
+      color: var(--warm-white);
+      padding: 3rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0.95;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+    }
+    .footer-logo span { color: var(--dusty-rose); font-style: italic; }
+    .footer-copy {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      opacity: 0.4;
+    }
+    .footer-social a {
+      color: var(--gold-light);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .footer-social a:hover { opacity: 1; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 4rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      #location { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Boho<span>'La</span> Beauty</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#booking">Book Now</a></li>
+      <li><a href="#location">Find Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Nail Artistry · Wonderboom, Pretoria</div>
+      <h1 class="hero-title">
+        Where <em>artistry</em><br>meets the<br>soul of boho
+      </h1>
+      <p class="hero-sub">
+        Handcrafted nails, gel sets & intricate nail art — tailored to you, done with love, from a private home studio in Wonderboom.
+      </p>
+      <a class="btn-book" href="https://wa.me/27825581075?text=Hi%20Boho'La%20Beauty%2C%20I'd%20like%20to%20book%20a%20nail%20appointment%20%F0%9F%92%85" target="_blank">
+        Book via WhatsApp
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-pattern"></div>
+      <div class="hero-image-placeholder">
+        <!-- Decorative Boho SVG Art -->
+        <svg class="boho-art" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#C9805A" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#D4A092" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="200" cy="200" r="180" fill="url(#bg)"/>
+          <!-- Outer petals -->
+          <g stroke="#B5603A" stroke-width="1.2" fill="none" opacity="0.7">
+            <ellipse cx="200" cy="80" rx="18" ry="40" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(30 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(60 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(90 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(120 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(150 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(180 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(210 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(240 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(270 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(300 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+            <ellipse cx="200" cy="80" rx="18" ry="40" transform="rotate(330 200 200)" fill="#C9805A" fill-opacity="0.25"/>
+          </g>
+          <!-- Middle ring of leaves -->
+          <g stroke="#8A9E84" stroke-width="1" fill="none" opacity="0.6">
+            <ellipse cx="200" cy="120" rx="10" ry="28" fill="#8A9E84" fill-opacity="0.2"/>
+            <ellipse cx="200" cy="120" rx="10" ry="28" transform="rotate(45 200 200)" fill="#8A9E84" fill-opacity="0.2"/>
+            <ellipse cx="200" cy="120" rx="10" ry="28" transform="rotate(90 200 200)" fill="#8A9E84" fill-opacity="0.2"/>
+            <ellipse cx="200" cy="120" rx="10" ry="28" transform="rotate(135 200 200)" fill="#8A9E84" fill-opacity="0.2"/>
+            <ellipse cx="200" cy="120" rx="10" ry="28" transform="rotate(180 200 200)" fill="#8A9E84" fill-opacity="0.2"/>
+            <ellipse cx="200" cy="120" rx="10" ry="28" transform="rotate(225 200 200)" fill="#8A9E84" fill-opacity="0.2"/>
+            <ellipse cx="200" cy="120" rx="10" ry="28" transform="rotate(270 200 200)" fill="#8A9E84" fill-opacity="0.2"/>
+            <ellipse cx="200" cy="120" rx="10" ry="28" transform="rotate(315 200 200)" fill="#8A9E84" fill-opacity="0.2"/>
+          </g>
+          <!-- Concentric circles -->
+          <circle cx="200" cy="200" r="60" stroke="#C8A96A" stroke-width="1" fill="none" opacity="0.5"/>
+          <circle cx="200" cy="200" r="45" stroke="#C8A96A" stroke-width="0.8" fill="none" opacity="0.4"/>
+          <circle cx="200" cy="200" r="28" stroke="#B5603A" stroke-width="1.2" fill="#C9805A" fill-opacity="0.25" opacity="0.8"/>
+          <!-- Center dot -->
+          <circle cx="200" cy="200" r="10" fill="#C9805A" opacity="0.7"/>
+          <!-- Decorative dots -->
+          <g fill="#C8A96A" opacity="0.6">
+            <circle cx="200" cy="145" r="3"/>
+            <circle cx="200" cy="145" r="3" transform="rotate(60 200 200)"/>
+            <circle cx="200" cy="145" r="3" transform="rotate(120 200 200)"/>
+            <circle cx="200" cy="145" r="3" transform="rotate(180 200 200)"/>
+            <circle cx="200" cy="145" r="3" transform="rotate(240 200 200)"/>
+            <circle cx="200" cy="145" r="3" transform="rotate(300 200 200)"/>
+          </g>
+          <!-- Outer ring -->
+          <circle cx="200" cy="200" r="175" stroke="#D4A092" stroke-width="0.8" fill="none" stroke-dasharray="4 8" opacity="0.4"/>
+        </svg>
+      </div>
+
+      <div class="hero-badge">
+        "Every set is a little piece of wearable art"
+      </div>
+
+      <div class="hero-location">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Wonderboom, Pretoria
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-label reveal">Our Services</div>
+    <h2 class="section-title reveal">Crafted for <em>you</em></h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">💅</div>
+        <div class="service-name">Classic Nails</div>
+        <p class="service-desc">Precision shaping, cuticle care and a flawless polish finish that lasts. Simple, clean, timeless — always done with intention.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">✨</div>
+        <div class="service-name">Gel Sets</div>
+        <p class="service-desc">Long-lasting gel application with a brilliant shine. Perfect for those who need their nails to keep up with their lifestyle.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🎨</div>
+        <div class="service-name">Nail Art</div>
+        <p class="service-desc">Intricate hand-painted designs, florals, bohemian patterns and custom artwork. Every nail tells a story that's uniquely yours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-visual reveal">
+      <div class="about-frame">
+        <div class="about-frame-inner">
+          Add your favourite<br>nail photo here
+        </div>
+      </div>
+      <div class="about-accent"></div>
+      <div class="about-tag">Home Studio</div>
+    </div>
+    <div class="about-text">
+      <div class="section-label reveal">About</div>
+      <h2 class="section-title reveal">A private studio,<br>a <em>personal</em> touch</h2>
+      <p class="about-body reveal">
+        Boho'La Beauty is a cosy, private nail studio nestled in Wonderboom, Pretoria. Every appointment is one-on-one — no rush, no noise, just you, your nails, and good energy. We pour care into every detail, from the shape of your cuticles to the last stroke of nail art.
+      </p>
+      <div class="about-stats reveal">
+        <div>
+          <span class="stat-num">3+</span>
+          <span class="stat-label">Services offered</span>
+        </div>
+        <div>
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Private studio</span>
+        </div>
+        <div>
+          <span class="stat-num">♡</span>
+          <span class="stat-label">Made with love</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING CTA -->
+  <section id="booking">
+    <div class="section-label reveal">Book an Appointment</div>
+    <h2 class="section-title reveal">Ready for your next<br><em>favourite</em> set?</h2>
+    <p class="booking-sub reveal">
+      Chat directly with us on WhatsApp to secure your slot. We'll confirm your appointment personally — no bots, no waiting, just a real conversation.
+    </p>
+    <a class="btn-whatsapp reveal" href="https://wa.me/27825581075?text=Hi%20Boho'La%20Beauty%2C%20I'd%20like%20to%20book%20a%20nail%20appointment%20%F0%9F%92%85" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      Chat on WhatsApp
+    </a>
+    <p class="booking-note reveal">Appointments confirmed personally · Wonderboom, Pretoria</p>
+  </section>
+
+  <!-- LOCATION -->
+  <section id="location">
+    <div class="location-details">
+      <div class="section-label reveal">Find Us</div>
+      <h2 class="section-title reveal">Visit our <em>studio</em></h2>
+      <div class="location-item reveal">
+        <div class="location-icon">📍</div>
+        <div>
+          <div class="location-item-label">Address</div>
+          <div class="location-item-value">146 Braam Pretorius St<br>Wonderboom, Pretoria, 0182</div>
+        </div>
+      </div>
+      <div class="location-item reveal">
+        <div class="location-icon">💬</div>
+        <div>
+          <div class="location-item-label">Bookings</div>
+          <div class="location-item-value">WhatsApp only<br>+27 82 558 1075</div>
+        </div>
+      </div>
+      <div class="location-item reveal">
+        <div class="location-icon">📘</div>
+        <div>
+          <div class="location-item-label">Follow our work</div>
+          <div class="location-item-value">
+            <a href="https://www.facebook.com/BohoLa" target="_blank" style="color: var(--clay); text-decoration: none;">Facebook — Boho'La</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map-placeholder reveal">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.2!2d28.193!3d-25.707!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s146+Braam+Pretorius+St%2C+Wonderboom%2C+Pretoria!5e0!3m2!1sen!2sza!4v1620000000000"
+        allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Boho'La Beauty location">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Boho<span>'La</span> Beauty</div>
+    <div class="footer-copy">© 2025 Boho'La Beauty · Wonderboom, Pretoria</div>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/BohoLa" target="_blank">Facebook</a>
+    </div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      setTimeout(() => {
+        ring.style.left = e.clientX + 'px';
+        ring.style.top = e.clientY + 'px';
+      }, 80);
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+        ring.style.opacity = '0.2';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+        ring.style.opacity = '0.5';
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
